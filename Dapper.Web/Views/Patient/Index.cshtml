@@ -1,0 +1,51 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Patient/_Layout.cshtml";
+}
+
+
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <div class="row bg-title">
+            <!-- .page title -->
+            <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                <h4 class="page-title">Giới thiệu</h4>
+            </div>
+            <!-- /.page title -->
+            <!-- .breadcrumb -->
+          @Html.Partial("_LoginRegister")
+            <!-- /.breadcrumb -->
+        </div>
+        <!-- .row -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="white-box">
+                    <h3 class="box-title">HỆ THỐNG BAO GỒM PHẦN MỀM, TÀI LIỆU HƯỚNG DẪN VÀ TÀI LIỆU THAM KHẢO</h3>
+
+
+                    <p><strong> 1.Phần mềm.</strong><br /></p>
+                    - Phần  mềm này có nhiều phiên bản khác nhau:
+                    <ul>
+                        <li><strong><em>Phiên bản cộng đồng:</em></strong> giúp cho người không có chuyên môn tự  chẩn đoán bệnh, 3 loại bệnh thường gặp là trầm cảm, lo âu và cơn hoảng loạn.</li>
+                        <li><strong><em>Phiên bản Bác sỹ đa khoa:</em></strong> hỗ trợ các bác sỹ trong chẩn đoán và  điều trị các rối loạn tâm thần thường gặp trong các bệnh mạn tính, nhóm này  cũng bao gồm: trầm cảm, lo âu và cơn hoảng loạn.</li>
+                        <li><strong><em>Phiên bản Bác sỹ Tâm thần:</em></strong> hỗ trợ các bác sỹ trong chẩn đoán và  điều trị các rối loạn tâm thần thường gặp trên lâm sàng.</li>
+                    </ul>
+                    <p>
+                        - Trong các phiên bản trên, phần chẩn đoán sử dụng tiêu chuẩn  chẩn đoán của hệ thống DSM, được sử dụng rộng rải trên nhiều quốc gia.<br />
+                        - Phần điều trị trong các phiên bản của các bác sỹ, sử dụng  các công trình thử thuốc và theo tài liệu <strong><em>"PRACTICE GUIDELINE FOR THE TREATMENT";</em></strong> của Hiệp hội Bác sỹ Tâm thần  Hoa kỳ (APA).<br />
+                        - Phần mềm này được viết cho điện thoại di động, máy tính bảng,  máy tính bàn nên có thể sử dụng rộng rải, tiện lợi cho việc quản lý bệnh nhân mạn  tính, như trong chương trình. Bảo vệ sức khỏe tâm thần cộng  đồng và trẻ em.<br />
+                        - Phần mềm này có thể hỗ trợ các phần mềm khác  trên các phương diện chẩn đoán và điều trị.
+                    </p>
+                    <p><strong>2. Tài liệu hướng dẫn sử dụng  phần mềm.</strong></p>
+                    <p><strong>3. Tài liệu tham khảo:"PRACTICE GUIDELINE FOR THE  TREATMENT".</strong></p>
+
+
+                </div>
+            </div>
+        </div>
+        <!-- .row -->
+    </div>
+    <!-- /.container-fluid -->
+    @Html.Partial("_Footer")
+</div>

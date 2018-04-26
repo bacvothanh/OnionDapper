@@ -1,0 +1,35 @@
+﻿@using Dapper.Web.Helpers
+
+@if (TempData["Errors"] != null)
+{
+    <script>
+        var errors = @TempData["Errors"].ToJson();
+        $.each(errors, function(index, error) {
+            $.toast({
+                heading: 'Có lỗi xảy ra',
+                text: error,
+                position: 'top-right',
+                loaderBg:'#ff6849',
+                icon: 'error',
+                hideAfter: 3500
+            });
+        });
+    </script>
+}
+
+@if (TempData["Success"] != null)
+{
+    <script>
+        var successes = @TempData["Success"].ToJson();
+        $.each(successes, function (index, success) {
+            $.toast({
+                heading: 'Thông báo',
+                text: success,
+                position: 'top-right',
+                loaderBg:'#ff6849',
+                icon: 'success',
+                hideAfter: 3500
+            });
+        });
+    </script>
+}

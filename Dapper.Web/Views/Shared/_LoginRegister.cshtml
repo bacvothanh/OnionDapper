@@ -1,0 +1,8 @@
+﻿@if (Request.IsAuthenticated == false)
+{
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <a href="@Url.Action("Register","Auth")" class="btn btn-danger pull-right m-l-5 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light">Đăng ký</a>
+        <a href="@Url.Action("Login","Auth")" class="btn btn-danger pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light">Đăng nhập</a>
+
+    </div>
+}

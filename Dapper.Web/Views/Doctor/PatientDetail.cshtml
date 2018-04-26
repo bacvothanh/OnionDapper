@@ -1,0 +1,166 @@
+﻿@model Dapper.ViewModel.PatientViewModel
+@{
+    ViewBag.Title = "Thông tin bệnh nhân";
+    Layout = "~/Views/Shared/Doctor/_Layout.cshtml";
+}
+
+<div id="page-wrapper" ng-controller="patientDetailController">
+    <div class="container-fluid">
+        <div class="row bg-title">
+            <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                <h4 class="page-title">Thông tin bệnh nhân #1</h4>
+            </div>
+        </div>
+        <!-- /.row -->
+        <!-- .row -->
+        <div class="row">
+            <div class="col-md-4 col-xs-12">
+                <div class="white-box">
+                    <div class="user-bg"> <img width="100%" alt="user" src="/App_Themes/admin/plugins/images/big/img2.jpg"> </div>
+                    <div class="user-btm-box">
+                        <!-- .row -->
+                        <div class="row text-center m-t-10">
+                            <div class="col-md-6 b-r">
+                                <strong>Họ Tên</strong>
+                                <p>@Model.FullName</p>
+                            </div>
+                            <div class="col-md-6">
+                                <strong>Nghề nghiệp</strong>
+                                <p>Engineer</p>
+                            </div>
+                        </div>
+                        <!-- /.row -->
+                        <hr>
+                        <!-- .row -->
+                        <div class="row text-center m-t-10">
+                            <div class="col-md-6 b-r">
+                                <strong>Email</strong>
+                                <p>@Model.Email</p>
+                            </div>
+                            <div class="col-md-6">
+                                <strong>Số điện thoại</strong>
+                                <p>@Model.PhoneNumber</p>
+                            </div>
+                        </div>
+                        <!-- /.row -->
+                        <hr>
+                        <!-- .row -->
+                        <div class="row text-center m-t-10">
+                            <div class="col-md-12">
+                                <strong>Địa chỉ</strong>
+                                <p>
+                                    @Model.Address
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8 col-xs-12">
+                <div class="white-box">
+                    <h3>Tiểu sử bệnh án</h3>
+                    <p class="m-t-30">Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt.Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.</p>
+                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries </p>
+                    <p>It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+
+                    <h3 class="box-title">Lịch sử trắc nghiệm</h3>
+                    <div class="table-responsive">
+                        <table class="table color-table muted-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Ngày thực hiện</th>
+                                    <th>Kết quả</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            @foreach (var examination in Model.Examinations)
+                            {
+                                <tr>
+                                    <td>@examination.Id</td>
+                                    <td>@examination.TimeCreatedOffset.ToLocalTime().DateTime</td>
+                                    <td>@examination.Result</td>
+                                    <td><a href="javascript:void(0)" ng-click="showExaminationResult(@examination.Id)">Chi tiết</a></td>
+                                </tr>
+                            }
+                           
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.row -->
+       
+    </div>
+    <!-- /.container-fluid -->
+    @Html.Partial("_Footer")
+
+    <div id="myModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" ng-click="closeModal('#myModal')" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="myModalLabel">Kết quả trắc nghiệm ngày {{exam.timeCreatedOffset | date : 'dd/MM/yyyy HH:mm'}}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-check" ng-repeat="question in exam.questions">
+                                <label class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input question" ng-checked="question.value == 'True'" disabled="disabled">
+                                    <span class="custom-control-indicator"></span>
+                                    <span class="custom-control-description">{{question.content}}</span>
+                                </label>
+                            </div>
+                            <div class="form-group" id="examnination-result">
+                                <div class="col-md-12">
+                                    <div class="alert alert-warning">
+                                        {{exam.result}}
+                                    </div>
+                                    <div class="col-md-5">
+                                        <a href="@Url.Action("DepressionTreatment")?patientId=@Model.Id&examId={{exam.id}}" class="btn btn-block btn-outline btn-rounded btn-success">Tiến hành khám <i class="fa fa-arrow-right"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clear-fix"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info waves-effect" ng-click="closeModal('#myModal')">Đóng</button>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="/App_Themes/admin/plugins/bower_components/flot/jquery.flot.js"></script>
+    <script src="/App_Themes/admin/plugins/bower_components/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
+    <script>
+        var config = {
+            patientId :'@ViewBag.PatientId'
+        };
+    </script>
+    <script src="~/App_Client/controllers/patientDetailController.js"></script>
+
+}
+
+@section styles{
+    <link href="/App_Themes/admin/plugins/bower_components/bootstrap-datepicker/bootstrap-datepicker.min.css" rel="stylesheet" type="text/css"/>
+    <style>
+        /*body.modal.show {
+             -webkit-filter: blur(2px);
+            -moz-filter: blur(2px);
+            -o-filter: blur(2px);
+            -ms-filter: blur(2px);
+            filter: blur(2px);
+        }*/
+        .custom-control-input:checked~.custom-control-indicator {
+            background-color: #0275d8 !important;
+        }
+    </style>
+}

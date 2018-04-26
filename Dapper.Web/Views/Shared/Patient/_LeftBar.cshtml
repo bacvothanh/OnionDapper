@@ -1,0 +1,84 @@
+﻿@using Dapper.Web.Helpers
+@{
+    var currentUser = MvcHelper.GetCurrentUser();
+}
+<div class="navbar-default sidebar" role="navigation">
+    <div class="sidebar-nav navbar-collapse slimscrollsidebar">
+        <ul class="nav" id="side-menu">
+            <li class="sidebar-search hidden-sm hidden-md hidden-lg">
+                <!-- input-group -->
+                <div class="input-group custom-search-form">
+                    <input type="text" class="form-control" placeholder="Search..."> <span class="input-group-btn">
+                        <button class="btn btn-default" type="button"> <i class="fa fa-search"></i> </button>
+                    </span>
+                </div>
+                <!-- /input-group -->
+            </li>
+            <li class="user-pro">
+                <a href="#" class="waves-effect">
+                    @if (Request.IsAuthenticated)
+                    {
+                        <img src="@currentUser.Avatar" alt="user-img" class="img-circle"> <span class="hide-menu">@currentUser.DisplayName<span class="fa arrow"></span></span>
+                    }
+                    else
+                    {
+                        <img src="/App_Themes/admin/plugins/images/users/agent.jpg" alt="user-img" class="img-circle"> <span class="hide-menu">Khách<span class="fa arrow"></span></span>
+                    }
+                </a>
+                <ul class="nav nav-second-level">
+                    <li><a href="javascript:void(0)"><i class="ti-user"></i> Hồ sơ cá nhân</a></li>
+                    <li><a href="javascript:void(0)"><i class="ti-email"></i> Tin nhắn</a></li>
+                    <li><a href="javascript:void(0)"><i class="ti-settings"></i> Cài đặt</a></li>
+                    <li><a href="@Url.Action("Logout","Auth")"><i class="fa fa-power-off"></i> Đăng xuất</a></li>
+                </ul>
+            </li>
+
+            <li class="nav-small-cap m-t-10">--- Đa khoa</li>
+            <li>
+                <a href="javascript:void(0);" class="waves-effect"><i class="fa fa-user-md p-r-10"></i> <span class="hide-menu"> Trầm cảm <span class="fa arrow"></span></span></a>
+                <ul class="nav nav-second-level">
+                    <li> <a href="@Url.Action("DepressionExamination","Patient")">Chuẩn đoán</a> </li>
+                    <li> <a href="#">Điều trị</a> </li>
+                    <li> <a href="#">Thuốc</a> </li>
+                </ul>
+            </li>
+
+            <li>
+                <a href="javascript:void(0);" class="waves-effect"><i class="icon-social-reddit p-r-10"></i> <span class="hide-menu"> Hoảng loạn <span class="fa arrow"></span></span></a>
+                <ul class="nav nav-second-level">
+                    <li> <a href="#">Chuẩn đoán</a> </li>
+                    <li> <a href="#">Điều trị</a> </li>
+                    <li> <a href="#">Thuốc</a> </li>
+                </ul>
+            </li>
+
+            <li>
+                <a href="javascript:void(0);" class="waves-effect"><i class="icon-social-spotify p-r-10"></i> <span class="hide-menu"> Lo âu <span class="fa arrow"></span></span></a>
+                <ul class="nav nav-second-level">
+                    <li> <a href="#">Chuẩn đoán</a> </li>
+                    <li> <a href="#">Điều trị</a> </li>
+                    <li> <a href="#">Thuốc</a> </li>
+                </ul>
+            </li>
+
+            <li class="nav-small-cap m-t-10">--- Tài liệu chuẩn đoán</li>
+            <li>
+                <a href="@Url.Action("Depression","Document")" class="waves-effect"><i class="ti-files p-r-10"></i> <span class="hide-menu"> Trầm cảm</span></a>
+            </li>
+            <li>
+                <a href="@Url.Action("Panic","Document")" class="waves-effect"><i class="ti-files p-r-10"></i> <span class="hide-menu"> Hoảng loạn</span></a>
+            </li>
+            <li>
+                <a href="@Url.Action("Unrest","Document")" class="waves-effect"><i class="ti-files p-r-10"></i> <span class="hide-menu"> Lo âu</span></a>
+            </li>
+
+            <li class="nav-small-cap">--- Hỗ trợ trực tuyến</li>
+            <li>
+                <a href="skype:bacvothanh?chat" class="waves-effect"><i class="icon-social-skype linea-software"></i> <span class="hide-menu">Skype chat</span></a>
+             
+            </li>
+            <li><a href="@Url.Action("Logout","Auth")" class="waves-effect"><i class="icon-logout fa-fw"></i> <span class="hide-menu">Đăng xuất</span></a></li>
+           
+        </ul>
+    </div>
+</div>

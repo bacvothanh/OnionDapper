@@ -1,0 +1,111 @@
+﻿@model Dapper.ViewModel.RegisterBindingModel
+@{
+    ViewBag.Title = "Đăng ký";
+    Layout = "~/Views/Shared/Auth/_Layout.cshtml";
+}
+
+@functions
+{
+    bool IsValid(string propertyName)
+    {
+        return ViewData.ModelState.IsValidField(propertyName);
+    }
+
+    string FormGroupValid(string propertyName)
+    {
+        if (IsValid(propertyName) == false)
+            return $"has-danger";
+        return string.Empty;
+    }
+
+    string FormControlValid(string propertyName)
+    {
+        if (IsValid(propertyName) == false)
+            return $"form-control-danger";
+        return string.Empty;
+    }
+}
+
+<section id="wrapper" class="login-register">
+    <div class="login-box login-sidebar">
+        <div class="white-box">
+            <form class="form-horizontal form-material" method="post" id="loginform" action="@Url.Action("Register","Auth")">
+                @Html.HiddenFor(x=>x.ReturnUrl)
+                <a href="@Url.Action("Index", "Patient")" class="text-center db"><img src="/App_Themes/admin/plugins/images/eliteadmin-logo-dark.png" alt="Home"/><br/><img src="/App_Themes/admin/plugins/images/eliteadmin-text-dark.png" alt="Home"/></a>
+                <h3 class="box-title m-t-20 m-b-0">Đăng ký hoàn toàn miễn phí</h3>
+
+                <div class="form-group m-t-10 @FormGroupValid("DisplayName")">
+                    <div class="col-xs-12">
+                        <input class="form-control @FormControlValid("DisplayName")" type="text" name="DisplayName" value="@Model.DisplayName" required="" placeholder="Họ Tên">
+                        @if (IsValid("DisplayName") == false)
+                        {
+                            <div class="form-control-feedback">@ViewData.ModelState["DisplayName"].Errors.First().ErrorMessage</div>
+                        }
+                    </div>
+                </div>
+
+                <div class="form-group @FormGroupValid("Email")">
+                    <div class="col-xs-12">
+                        <input class="form-control @FormControlValid("Email")" type="email" value="@Model.Email" name="Email" required="" placeholder="Email">
+                        @if (IsValid("Email") == false)
+                        {
+                            <div class="form-control-feedback">@ViewData.ModelState["Email"].Errors.First().ErrorMessage</div>
+                        }
+                    </div>
+                </div>
+
+                <div class="form-group @FormGroupValid("PhoneNumber")">
+                    <div class="col-xs-12">
+                        <input class="form-control @FormControlValid("PhoneNumber")" type="text" required="" value="@Model.PhoneNumber" name="PhoneNumber" placeholder="Số điện thoại">
+                        @if (IsValid("PhoneNumber") == false)
+                        {
+                            <div class="form-control-feedback">@ViewData.ModelState["PhoneNumber"].Errors.First().ErrorMessage</div>
+                        }
+                    </div>
+                </div>
+
+                
+                <div class="form-group @FormGroupValid("Password")">
+                    <div class="col-xs-12">
+                        <input class="form-control @FormControlValid("Password")" type="password" name="Password" required="" placeholder="Mật khẩu">
+                        @if (IsValid("Password") == false)
+                        {
+                            <div class="form-control-feedback">@ViewData.ModelState["Password"].Errors.First().ErrorMessage</div>
+                        }
+                    </div>
+                </div>
+
+                <div class="form-group  @FormGroupValid("ConfirmPassword")">
+                    <div class="col-xs-12">
+                        <input class="form-control @FormControlValid("ConfirmPassword")" type="password" name="ConfirmPassword" required="" placeholder="Mật khẩu xác nhận">
+                        @if (IsValid("ConfirmPassword") == false)
+                        {
+                            <div class="form-control-feedback">@ViewData.ModelState["ConfirmPassword"].Errors.First().ErrorMessage</div>
+                        }
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <div class="checkbox checkbox-primary p-t-0">
+                            <input id="checkbox-signup" type="checkbox">
+                            <label for="checkbox-signup"> Tôi hoàn toàn đồng ý với các <a href="#">Điều khoản</a></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group text-center m-t-20">
+                    <div class="col-xs-12">
+                        <button class="btn btn-info btn-lg btn-block text-uppercase waves-effect waves-light" type="submit">Đăng ký</button>
+                    </div>
+                </div>
+                <div class="form-group m-b-0">
+                    <div class="col-sm-12 text-center">
+                        <p>Bạn đã có tài khoản? <a href="@Url.Action("Login", "Auth")" class="text-primary m-l-5"><b>Đăng nhập</b></a>
+                        </p>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+

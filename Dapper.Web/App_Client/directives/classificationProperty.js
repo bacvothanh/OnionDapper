@@ -1,0 +1,3 @@
+﻿app.directive('classificationPropertyLevel', function() {
+    
+});

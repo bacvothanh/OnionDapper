@@ -1,0 +1,118 @@
+﻿@using Dapper.Data.Enums
+@using Dapper.Infrastructure
+@using Dapper.ViewModel
+@using Dapper.Web.Helpers
+
+@{
+    ViewBag.Title = "Chuẩn đoán trầm cảm";
+    Layout = "~/Views/Shared/Patient/_Layout.cshtml";
+    var questions = ViewBag.Questions as List<QuestionViewModel> ?? new List<QuestionViewModel>();
+}
+
+
+
+<div id="page-wrapper" ng-controller="depressionExaminationController">
+    <div class="container-fluid">
+        <div class="row bg-title">
+            <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                <h4 class="page-title">Triệu chứng trầm cảm</h4>
+            </div>
+
+            @Html.Partial("_LoginRegister")
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="white-box">
+                    <p class="text-muted m-b-30 font-13"> Đánh dấu vào những triệu chứng bạn đang gặp phải</p>
+                    <form class="form-horizontal" id="depression-examination" method="post">
+                        <div class="form-group row">
+                            <div class="col-sm-6">
+
+                                <div class="form-check" ng-repeat="question in questions">
+                                    <label class="custom-control custom-checkbox" ng-if="question.type==@((int) QuestionType.Checkbox)">
+                                        <input type="checkbox" class="custom-control-input question" ng-model="question.isChecked" name="Result">
+                                        <span class="custom-control-indicator"></span>
+                                        <span class="custom-control-description">{{question.content}}</span>
+                                    </label>
+                                    <div class="form-group" ng-if="question.type==@((int)QuestionType.Textbox)">
+                                        <label class="col-md-4 col-form-label">{{question.content}}</label>
+                                        <input type="text" class="form-control col-md-6" ng-model="question.value" style="max-width: 60%;"/>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group" id="examnination-result" ng-if="examResult !=null">
+                                    <div class="col-md-12">
+                                        <div class="alert {{examResult.hasSick?'alert-danger':'alert-success'}}" id="examnination-text">{{examResult.message}}
+                                        </div>
+                                        <div class="col-md-5" ng-if="examResult.hasSick">
+                                            <a href="#" ng-click="bookAppointment()" class="btn btn-block btn-outline btn-rounded btn-success">Đặt lịch hẹn khám</a>    
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group m-b-0">
+                                    <div class="offset-sm-3 col-sm-9">
+                                        <button type="button" id="btn-depression-examination" ng-click="submitExam()" class="btn btn-info waves-effect waves-light m-t-10">Coi kết quả</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <div class="col-sm-6">Thời gian cơn (ngày):</div>
+                                    <div class="col-sm-3">{{questions[indexOfSickTime].value}}</div>
+                                    <div class="col-sm-3"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">Số triệu chứng chính:</div>
+                                    <div class="col-sm-3">{{mainCheckedQuestion}}</div>
+                                    <div class="col-sm-3"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">Số triệu chứng:</div>
+                                    <div class="col-sm-3">{{totalCheckedQuestion}}</div>
+                                    <div class="col-sm-3"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6"><strong>Tiêu chuẩn A:</strong></div>
+                                    <div class="col-sm-3">{{totalCheckedQuestion == 3?1:0}}</div>
+                                    <div class="col-sm-3"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">Sinh hoạt:</div>
+                                    <div class="col-sm-3">{{totalCheckedQuestion}}</div>
+                                    <div class="col-sm-3"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6"><strong>Tiêu chuẩn B:</strong></div>
+                                    <div class="col-sm-3">{{totalCheckedQuestion >= 1?1:0}}</div>
+                                    <div class="col-sm-3"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">Chẩn đoán:</div>
+                                    <div class="col-sm-3">{{examResult.message}}</div>
+                                    <div class="col-sm-3"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    @Html.Partial("_Footer")
+</div>
+
+@section scripts{
+    <script>
+        var config = {
+            bookAppointmentUrl: '@Url.Action("BookAppointment","Patient",new { specialist  = SpecialistType.Depression})',
+            submitExamResult: '@Url.Action("SubmitExamResult","Patient")',
+            questions :@(questions.ToJson())
+        };
+    </script>
+    <script src="~/App_Client/controllers/depressionExaminationController.js"></script>
+}

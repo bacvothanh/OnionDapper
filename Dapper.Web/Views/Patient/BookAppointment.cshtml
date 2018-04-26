@@ -1,0 +1,116 @@
+﻿@using Dapper.Data.Enums
+@using Dapper.Web.Helpers
+@model Dapper.ViewModel.BookAppointmentBindingModel
+@{
+    ViewBag.Title = "Đặt lịch hẹn khám";
+    Layout = "~/Views/Shared/Patient/_Layout.cshtml";
+}
+
+
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <div class="row bg-title">
+            <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                <h4 class="page-title">Thông tin đặt hẹn khám</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="white-box">
+                    <form class="form-material form-horizontal" action="@Url.Action("BookAppointment","Patient", new {})" method="post">
+                        <div class="form-group">
+                            <label class="col-md-12" for="Name">
+                                Họ Tên
+                            </label>
+                            <div class="col-md-12">
+                                <input type="text" id="Name" name="Name" class="form-control" value="@Model.Name" maxlength="250">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-12" for="Birthday">
+                                Ngày sinh (dd/MM/yyyy)
+                            </label>
+                            <div class="col-md-12">
+                                <input type="text" id="Birthday" name="Birthday" class="form-control mydatepicker" value="@Model.Birthday.ToString("dd/MM/yyyy")">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-12">Giới tính</label>
+                            <div class="col-sm-12">
+                                @Html.DropDownListFor(m => m.Gender,
+                                            MvcHelper.GetSelectListForGender(), "",
+                                            new { @class = "form-control", required = "" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-12">Dịch vụ</label>
+                            <div class="col-sm-12">
+                                <select class="form-control" name="Specialist">
+                                    @foreach (var item in MvcHelper.GetSelectListForSpecialist())
+                                    {
+                                        <option value="@item.Value" @(item.Value== ((int)Model.Specialist).ToString()?"selected":"")>@item.Text</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-12" for="Date">Ngày khám (dd/MM/yyyy)</label>
+                            <div class="col-md-12">
+                                <input type="text" id="Date" name="Date" class="form-control mydatepicker" value="@DateTime.Now.ToString("dd/MM/yyyy")">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-12">Thời gian</label>
+                            <div class="col-sm-12">
+                                @Html.DropDownListFor(m => m.DayPart,
+                                            MvcHelper.GetSelectListForDaypart(), "",
+                                            new { @class = "form-control", required="" })
+                                
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-12" for="Email">
+                                Email
+                            </label>
+                            <div class="col-md-12">
+                                <input type="email" id="Email" name="Email" class="form-control" placeholder="email" maxlength="250" value="@Model.Email">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-12" for="PhoneNumber">
+                                Số điện thoại
+                            </label>
+                            <div class="col-md-12">
+                                <input type="text" id="PhoneNumber" name="PhoneNumber" class="form-control" value="@Model.PhoneNumber" placeholder="nhập số điện thoại" data-mask="(999) 999-9999" maxlength="50">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-12">Ghi chú</label>
+                            <div class="col-md-12">
+                                <textarea class="form-control" rows="3" name="Note" maxlength="1000">@Model.Note</textarea>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-info waves-effect waves-light m-r-10">Hẹn khám</button>
+                        <a href="@Url.Action("Index","Patient")" class="btn btn-inverse waves-effect waves-light">Hủy</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   @Html.Partial("_Footer")
+</div>
+
+
+@section scripts{
+<script src="/App_Themes/admin/plugins/bower_components/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
+<script type="text/javascript">
+    // Date Picker
+    jQuery('.mydatepicker').datepicker({ format: 'dd/mm/yyyy' });
+</script>
+}
+
+@section styles{
+    <link href="/App_Themes/admin/plugins/bower_components/bootstrap-datepicker/bootstrap-datepicker.min.css" rel="stylesheet" type="text/css" />
+}
+

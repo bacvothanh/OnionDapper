@@ -3,3 +3,19 @@
 ################################################################################
 
 /Dapper.Converter/bin
+/Dapper.Converter/obj
+/Dapper.Data/bin
+/Dapper.Data/obj
+/Dapper.Infrastructure/bin
+/Dapper.Infrastructure/obj
+/Dapper.Repository/bin
+/Dapper.Repository/obj
+/Dapper.Service/bin
+/Dapper.Service/obj
+/Dapper.UnitTest/bin
+/Dapper.UnitTest/obj
+/Dapper.ViewModel/bin
+/Dapper.ViewModel/obj
+/Dapper.Web/bin
+/Dapper.Web/obj
+/packages

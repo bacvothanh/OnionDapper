@@ -1,0 +1,56 @@
+﻿@using Dapper.Web.Helpers
+@{
+    var currentUser = MvcHelper.GetCurrentUser();
+}
+
+<div class="navbar-default sidebar" role="navigation">
+    <div class="sidebar-nav navbar-collapse slimscrollsidebar">
+        <ul class="nav" id="side-menu">
+            <li class="sidebar-search hidden-sm hidden-md hidden-lg">
+                <!-- input-group -->
+                <div class="input-group custom-search-form">
+                    <input type="text" class="form-control" placeholder="Search..."> <span class="input-group-btn">
+                        <button class="btn btn-default" type="button"> <i class="fa fa-search"></i> </button>
+                    </span>
+                </div>
+                <!-- /input-group -->
+            </li>
+            <li class="user-pro">
+                <a href="#" class="waves-effect">
+                    <img src="@currentUser.Avatar" alt="user-img" class="img-circle"> <span class="hide-menu">@currentUser.DisplayName<span class="fa arrow"></span></span>
+                </a>
+                <ul class="nav nav-second-level">
+                    <li><a href="@Url.Action("EditProfile","Doctor")"><i class="ti-user"></i> Hồ sơ cá nhân</a></li>
+                    <li><a href="javascript:void(0)"><i class="ti-email"></i> Tin nhắn</a></li>
+                    <li><a href="javascript:void(0)"><i class="ti-settings"></i> Cài đặt</a></li>
+                    <li><a href="@Url.Action("Logout","Auth")"><i class="fa fa-power-off"></i> Đăng xuất</a></li>
+                </ul>
+            </li>
+            <li> <a href="@Url.Action("Dashboard","Doctor")" class="waves-effect"><i class="ti-dashboard p-r-10"></i> <span class="hide-menu">Dashboard</span></a> </li>
+           
+            <li>
+                <a href="@Url.Action("Appointments","Doctor")" class="waves-effect"><i class="ti-calendar p-r-10"></i> <span class="hide-menu"> Lịch hẹn </span></a>
+            </li>
+            <li>
+                <a href="javascript:void(0);" class="waves-effect"><i class="icon-people p-r-10"></i> <span class="hide-menu"> Bệnh nhân <span class="fa arrow"></span></span></a>
+                <ul class="nav nav-second-level">
+                    <li> <a href="@Url.Action("Patients","Doctor")">Danh sách</a> </li>
+                    <li> <a href="#">Add Patient</a> </li>
+                    <li> <a href="#">Edit Patient</a> </li>
+                    <li> <a href="#">Patient Profile</a> </li>
+                </ul>
+            </li>
+            <li>
+                <a href="javascript:void(0);" class="waves-effect"><i class="icon-chart p-r-10"></i> <span class="hide-menu"> Báo cáo <span class="fa arrow"></span></span></a>
+                <ul class="nav nav-second-level">
+                    <li> <a href="#">Payment Report</a></li>
+                    <li> <a href="#">Income Report</a></li>
+                    <li> <a href="#">Sales Report</a></li>
+                </ul>
+            </li>
+
+            <li><a href="@Url.Action("Logout","Auth")" class="waves-effect"><i class="icon-logout fa-fw"></i> <span class="hide-menu">Log out</span></a></li>
+            
+        </ul>
+    </div>
+</div>

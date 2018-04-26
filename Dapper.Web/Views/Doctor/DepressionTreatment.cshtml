@@ -1,0 +1,195 @@
+﻿@using Dapper.Data.Enums
+@using Dapper.Infrastructure.Extensions
+@using Dapper.ViewModel
+@using Dapper.Web.Helpers
+
+@{
+    ViewBag.Title = "Điều trị Trầm cảm";
+    Layout = "~/Views/Shared/Doctor/_Layout.cshtml";
+    var questions = ViewBag.Questions as List<QuestionViewModel> ?? new List<QuestionViewModel>();
+    var patient = ViewBag.Patient as PatientViewModel ?? new PatientViewModel();
+    var exam = ViewBag.Exam as ExaminationDetailModel;
+    var pivots = ViewBag.Pivots as DepressionTreatmentBindingModel;
+}
+
+<div id="page-wrapper" ng-controller="depressionTreatmentController">
+    <div class="container-fluid">
+        <div class="row bg-title">
+            <!-- .page title -->
+            <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                <h4 class="page-title">Khám điều trị Trầm cảm</h4>
+            </div>
+            <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+                <ol class="breadcrumb">
+                    <li><a href="@Url.Action("Dashboard","Doctor")">Portal</a></li>
+                    <li class="active">Điều trị trầm cảm</li>
+                </ol>
+            </div>
+        </div>
+       
+
+        <div class="sttabs tabs-style-linetriangle white-box">
+            <nav>
+                <ul>
+                    <li ng-class="tabIndex==0?'tab-current':''"><a href="javascript:void(0);" ng-click="setTabIndex(0)"><span>Điều trị</span></a></li>
+                    <li ng-class="tabIndex==1?'tab-current':''"><a href="javascript:void(0);" ng-click="setTabIndex(1)"><span>Kết luận</span></a></li>
+                </ul>
+            </nav>
+            <div class="content-wrap">
+                <section ng-class="tabIndex==0?'content-current':''">
+                    <!-- .row -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="white-box">
+                                <div class="col-md-3">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                            <tbody>
+                                                <tr>
+                                                    <td>Mã số:</td>
+                                                    <td><input type="text" class="form-control" value="@patient.Id" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Họ và tên</td>
+                                                    <td><input type="text" class="form-control" value="@patient.FullName" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Ngày khám:</td>
+                                                    <td><input type="text" class="form-control" value="@(DateTime.Now.ToString("dd/MM/yyyy"))" /></td>
+                                                </tr>
+
+                                                <tr ng-repeat="question in questions">
+                                                    <td>{{question.content}}</td>
+                                                    <td>
+                                                        <label class="custom-control custom-checkbox">
+                                                            <input type="checkbox" class="custom-control-input" ng-model="question.isChecked" ng-checked="question.isChecked" ng-click="updateResult()">
+                                                            <span class="custom-control-indicator"></span>
+                                                        </label>
+
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Số triệu chứng:</td>
+                                                    <td>{{numberOfSymptom}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Thuyên giảm:</td>
+                                                    <td>{{resultSymptom}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="depressionGroup">Số thuốc chống trầm cảm:</td>
+                                                    <td>{{numberOfDepression}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="psychosisGroup">Số thuốc chống loạn thần:</td>
+                                                    <td>{{numberOfPsychotic}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="col-md-12" ng-repeat="pivot in pivots.tables">
+                                        <h3>{{pivot.name}}</h3>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Thuốc</th>
+                                                        <th ng-repeat="column in pivot.columns">{{column.name}}</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="row in pivot.rows">
+                                                        <td ng-repeat="cell in row.cells">{{cell.value}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <h3>{{pivots.summaryTable.name}}</h3>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Thuốc</th>
+                                                        <th ng-repeat="header in pivots.summaryTable.header">{{header}}</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="row in pivots.summaryTable.rows">
+                                                        <td ng-repeat="cell in row.cells" class="{{cell.group===@((int)ClassificationGroup.Depression)?'depressionGroup':cell.group===@((int)ClassificationGroup.Psychosis)?'psychosisGroup':''}}">{{cell.value}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <button class="btn btn-default pull-right" ng-click="next()">Tiếp tục <i class="fa fa-arrow-circle-right"></i></button>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- .row -->
+                </section>
+                <section ng-class="tabIndex==1?'content-current':''">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <form class="form">
+                                <div class="form-group">
+                                    <label class="col-md-12">Ghi chú</label>
+                                    <div class="col-md-12">
+                                        <textarea class="form-control" rows="5"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="clearfix"></div>
+                                <br/>
+                                <button class="btn btn-default pull-right" ng-click="previous()"><i class="fa fa-arrow-circle-left"></i> Quay lại</button>
+                            </form>
+                        </div>
+                    </div>
+                   
+                </section>
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+    @Html.Partial("_Footer")
+</div>
+
+@section scripts{
+    <script src="/App_Themes/admin/js/cbpFWTabs.js"></script>
+    <script type="text/javascript">
+        (function() {
+
+            [].slice.call(document.querySelectorAll('.sttabs')).forEach(function(el) {
+                new CBPFWTabs(el);
+            });
+
+        })();
+    </script>
+    <script>
+        var config = {
+            questions:@questions.ToJson(),
+            pivots:@pivots.ToJson(),
+            exam:@exam.ToJson(),
+            specialistId:@SpecialistType.Depression.GetId()
+        };
+    </script>
+    <script src="~/App_Client/controllers/depressionTreatmentController.js"></script>
+}
+
+@section styles{
+    <style>
+        .depressionGroup {
+            color: red;
+        }
+        .psychosisGroup {
+            color: green;
+        }
+    </style>
+}

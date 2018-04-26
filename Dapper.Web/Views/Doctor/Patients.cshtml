@@ -1,0 +1,85 @@
+﻿@using Dapper.ViewModel
+
+@{
+    ViewBag.Title = "Patients";
+    Layout = "~/Views/Shared/Doctor/_Layout.cshtml";
+    var patients = ViewBag.Patients as List<PatientViewModel> ?? new List<PatientViewModel>();
+}
+
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <div class="row bg-title">
+            <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                <h4 class="page-title">Danh sách bệnh nhân</h4>
+            </div>
+          
+        </div>
+        <!-- /row -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="white-box">
+                    <div class="table-responsive">
+                        <table id="example23" class="display nowrap" cellspacing="0" width="100%">
+                            <thead>
+                            <tr>
+                                <th>ID.</th>
+                                <th>Tên</th>
+                                <th>Địa chỉ</th>
+                                <th>Tuổi</th>
+                                <th>SĐT</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach (var patient in patients)
+                            {
+                                <tr>
+                                    <td>@patient.Id</td>
+                                    <td>@patient.FullName</td>
+                                    <td>@patient.Address</td>
+                                    <td>@patient.Birthday</td>
+                                    <td>@patient.PhoneNumber</td>
+                                    <td>
+                                        <a href="@Url.Action("PatientDetail","Doctor",new {patientId=@patient.Id})">Chi tiết <i class="fa fa-angle-double-right"></i></a>
+                                    </td>
+                                </tr>
+                            }
+                            
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    @Html.Partial("_Footer")
+</div>
+
+
+
+@section scripts{
+    <script src="/App_Themes/admin/plugins/bower_components/datatables/jquery.dataTables.min.js"></script>
+    <!-- start - This is for export functionality only -->
+    <script src="https://cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.flash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+    <script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
+    <script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js"></script>
+<script>
+    $('#example23').DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ]
+    });
+</script>
+}
+
+@section styles{
+    <link href="/App_Themes/admin/plugins/bower_components/datatables/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.datatables.net/buttons/1.2.2/css/buttons.dataTables.min.css" rel="stylesheet" type="text/css" />
+}
